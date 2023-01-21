@@ -1,3 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+/* background mesh gradient */
+.my-bgGradient {
+  background-color: hsla(328, 55%, 39%, 1);
+  background-image: radial-gradient(
+      at 0% 55%,
+      hsla(309, 60%, 61%, 1) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 84% 42%, hsla(297, 73%, 68%, 1) 0px, transparent 50%),
+    radial-gradient(at 61% 25%, hsla(79, 45%, 73%, 1) 0px, transparent 50%),
+    radial-gradient(at 99% 41%, hsla(312, 75%, 32%, 1) 0px, transparent 50%),
+    radial-gradient(at 8% 69%, hsla(68, 69%, 76%, 1) 0px, transparent 50%),
+    radial-gradient(at 41% 98%, hsla(2, 96%, 66%, 1) 0px, transparent 50%),
+    radial-gradient(at 72% 4%, hsla(198, 100%, 52%, 1) 0px, transparent 50%);
+}
