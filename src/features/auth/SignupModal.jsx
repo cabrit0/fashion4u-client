@@ -9,7 +9,7 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
     >
       <div className="bg-slate-800 rounded-3xl shadow-xl w-10/12 p-4">
         <h2 className=" text-center text-xl text-gray-200 font-bold mt-4">
-          Singup an account
+          Sign up an account
         </h2>
         <form className="mx-12 py-4">
           <div className="my-4">
