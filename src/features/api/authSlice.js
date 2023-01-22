@@ -56,9 +56,9 @@ export const signup = (userData) => async (dispatch) => {
     dispatch(signupStart());
     const response = await axiosInstance.post("users/register", userData);
     dispatch(signupSuccess(response.data));
-    console.log(response);
-  } catch (error) {
-    dispatch(signupFailed(error.message));
+    console.log(response.data);
+  } catch (response) {
+    dispatch(signupFailed(response));
   }
 };
 
@@ -67,9 +67,9 @@ export const login = (userData) => async (dispatch) => {
     dispatch(loginStart());
     const response = await axiosInstance.post("users/login", userData);
     dispatch(loginSuccess(response.data));
-    console.log(response);
-  } catch (error) {
-    dispatch(loginFailed(error));
+    console.log(response.data);
+  } catch (response) {
+    dispatch(loginFailed(response));
   }
 };
 

@@ -31,18 +31,3 @@
     radial-gradient(at 41% 98%, hsla(2, 96%, 66%, 1) 0px, transparent 50%),
     radial-gradient(at 72% 4%, hsla(198, 100%, 52%, 1) 0px, transparent 50%);
 }
-
-/* text gradient */
-.my-textGradient {
-background: linear-gradient(
-to right,
-#7b1fa2,
-#ff4081,
-#0277bd,
-#00e676,
-#ff5722,
-#ffeb3b
-);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}

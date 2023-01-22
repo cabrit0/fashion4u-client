@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { signup } from "../api/authSlice";
 import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
@@ -12,7 +12,27 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [errors, setErrors] = useState([]);
+
   const dispatch = useDispatch();
+
+  const errorsRef = useRef(errors);
+  const submitButtonRef = useRef();
+
+  useEffect(() => {
+    errorsRef.current = errors;
+  }, [errors]);
+
+  useEffect(() => {
+    const inputValues = [name, email, password, passwordConfirm];
+    const hasErrors = errorsRef.current.length > 0;
+
+    if (inputValues.some((value) => !value) || hasErrors) {
+      submitButtonRef.current.setAttribute("disabled", true);
+    } else {
+      submitButtonRef.current.removeAttribute("disabled");
+    }
+  }, [name, email, password, passwordConfirm, errorsRef]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,12 +40,15 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
 
     if (password !== passwordConfirm) {
       setError("Passwords do not match");
+      setErrors([...errors, passwordError]);
       return;
     }
     if (emailError) {
       setError("Invalid email address");
+      setErrors([...errors, emailError]);
       return;
     }
+    setErrors([]);
     try {
       await dispatch(signup(userData));
       setModalVisible(false);
@@ -34,7 +57,7 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
     }
   };
 
-  const containerVariants = {
+  const formVariants = {
     hidden: {
       opacity: 0,
       x: "-100vw",
@@ -59,7 +82,7 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
     },
     visible: {
       y: 0,
-      opacity: 1,
+      opacity: 0.7,
       transition: {
         type: "spring",
         stiffness: 100,
@@ -77,6 +100,7 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
     setPasswordError(false);
     setPasswordConfirmError(false);
     setModalVisible(false);
+    setErrors([]);
   };
 
   const handleChange = (event) => {
@@ -87,8 +111,10 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
       setName(value);
       if (value.length < 3) {
         setNameError(true);
+        setErrors([...errors, "Name must be at least 3 characters"]);
       } else {
         setNameError(false);
+        setErrors([]);
       }
     }
 
@@ -100,8 +126,10 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
         )
       ) {
         setEmailError(true);
+        setErrors([...errors, "Invalid email address"]);
       } else {
         setEmailError(false);
+        setErrors([]);
       }
     }
 
@@ -109,8 +137,10 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
       setPassword(value);
       if (value.length < 6) {
         setPasswordError(true);
+        setErrors([...errors, "Password must be at least 6 characters"]);
       } else {
         setPasswordError(false);
+        setErrors([]);
       }
     }
 
@@ -118,17 +148,22 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
       setPasswordConfirm(value);
       if (value !== password) {
         setPasswordConfirmError(true);
+        setErrors([...errors, "passwords must match"]);
       } else {
         setPasswordConfirmError(false);
+        setErrors([]);
       }
     }
   };
 
   return (
-    <div
+    <motion.div
       className={`fixed top-0 left-0 right-0 bottom-0 h-screen w-screen flex items-center justify-center ${
         modalVisible ? "block" : "hidden"
       }`}
+      variants={formVariants}
+      initial="hidden"
+      animate={modalVisible ? "visible" : "hidden"}
     >
       <div className="bg-slate-800 rounded-3xl shadow-xl w-10/12 p-4">
         <h2 className=" text-center text-xl text-gray-200 font-bold mt-4">
@@ -137,17 +172,18 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
         <form className="mx-12 py-4" onSubmit={handleSubmit}>
           <div className="my-4">
             <label className="block text-gray-200 font-medium mb-2">Name</label>
-            <input
+            <motion.input
               type="text"
-              id="name"
               name="name"
+              className="w-full bg-lux-purple text-gray-100 font-bold opacity-60 focus:opacity-100 focus:border-none active:bg-lux-purple rounded-lg py-1 px-3 focus:scale-105 duration-500"
               value={name}
-              className="w-full bg-lux-purple text-gray-100 font-bold opacity-75 focus:opacity-100 focus:border-none rounded-lg py-1 px-3 focus:scale-105 duration-500"
               onChange={handleChange}
+              variants={inputVariants}
+              whileFocus={{ scale: 1.05, opacity: 1 }}
             />
             {nameError && (
-              <p className="text-red-400 text-sm italic animate-bounce mt-2">
-                Name should be more then 3 characters long
+              <p className="text-red-500 text-xs italic mt-2">
+                Name must be at least 3 characters
               </p>
             )}
           </div>
@@ -155,17 +191,18 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
             <label className="block text-gray-200 font-medium mb-2">
               Email
             </label>
-            <input
+            <motion.input
               type="email"
-              id="email"
               name="email"
+              className="w-full bg-lux-purple text-gray-100 font-bold opacity-60 focus:opacity-100 focus:border-none rounded-lg py-1 px-3 focus:scale-105 duration-500"
               value={email}
-              className="w-full bg-lux-purple text-gray-100 font-bold opacity-75 focus:opacity-100 focus:border-none rounded-lg py-1 px-3 focus:scale-105 duration-500"
               onChange={handleChange}
+              variants={inputVariants}
+              whileFocus={{ scale: 1.05, opacity: 1 }}
             />
             {emailError && (
-              <p className="text-red-400 text-sm italic animate-bounce mt-2">
-                Enter valid email address
+              <p className="text-red-500 text-xs italic mt-2">
+                Invalid email address
               </p>
             )}
           </div>
@@ -173,17 +210,18 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
             <label className="block text-gray-200 font-medium mb-2">
               Password
             </label>
-            <input
+            <motion.input
               type="password"
-              id="password"
               name="password"
+              className="w-full bg-lux-purple text-gray-100 font-bold opacity-60 focus:opacity-100 focus:border-none rounded-lg py-1 px-3 focus:scale-105 duration-500"
               value={password}
-              className="w-full bg-lux-purple text-gray-100 font-bold opacity-75 focus:opacity-100 focus:border-none rounded-lg py-1 px-3 focus:scale-105 duration-500"
               onChange={handleChange}
+              variants={inputVariants}
+              whileFocus={{ scale: 1.05, opacity: 1 }}
             />
             {passwordError && (
-              <p className="text-red-400 text-sm italic animate-bounce mt-2">
-                Password must be more then 6 characters long
+              <p className="text-red-500 text-xs italic mt-2">
+                Password must be at least 6 characters
               </p>
             )}
           </div>
@@ -191,37 +229,48 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
             <label className="block text-gray-200 font-medium mb-2">
               Confirm Password
             </label>
-            <input
+            <motion.input
               type="password"
-              id="passwordConfirm"
               name="passwordConfirm"
+              className="w-full bg-lux-purple text-gray-100 font-bold opacity-60 focus:opacity-100 focus:border-none rounded-lg py-1 px-3 focus:scale-105 duration-500"
               value={passwordConfirm}
-              className="w-full bg-lux-purple text-gray-100 font-bold opacity-75 focus:opacity-100 focus:border-none rounded-lg py-1 px-3 focus:scale-105 duration-500"
               onChange={handleChange}
+              variants={inputVariants}
+              whileFocus={{ scale: 1.05, opacity: 1 }}
             />
             {passwordConfirmError && (
-              <p className="text-red-400 text-sm italic animate-bounce mt-2">
-                Passwords must match
+              <p className="text-red-500 text-xs italic mt-2">
+                Passwords do not match
               </p>
             )}
           </div>
-          <div className="mt-8 mx-4 flex justify-start">
-            <button
-              type="submit"
-              className="mx-1 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-2 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
-            >
-              Sign up
-            </button>
-            <button
-              className="mx-1 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-2 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-red-500 border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-slate-800 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
+          <div className="my-8 flex justify-between">
+            <motion.button
+              type="button"
               onClick={handleCloseModal}
+              className="mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-red-500 border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
+              variants={inputVariants}
+              whileHover={{ opacity: 1 }}
+              whileFocus={{ scale: 1.05, opacity: 1 }}
             >
               Cancel
-            </button>
+            </motion.button>
+            <motion.button
+              type="submit"
+              className={`mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500 ${
+                !errors.length > 0 ? "cursor-pointer" : "disabled cursor-not-allowed"
+              }`}
+              ref={submitButtonRef}
+              variants={inputVariants}
+              whileHover={{ opacity: 1 }}
+              whileFocus={{ scale: 1.05, opacity: 1 }}
+            >
+              Sign up
+            </motion.button>
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 export default SignupModal;
