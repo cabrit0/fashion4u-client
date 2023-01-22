@@ -244,7 +244,21 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
               </p>
             )}
           </div>
-          <div className="my-8 flex justify-between">
+          <div className="my-8 flex justify-start">
+            <motion.button
+              type="submit"
+              className={`mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500 ${
+                !errors.length > 0
+                  ? "cursor-pointer"
+                  : "disabled cursor-not-allowed"
+              }`}
+              ref={submitButtonRef}
+              variants={inputVariants}
+              whileHover={{ opacity: 1 }}
+              whileFocus={{ scale: 1.05, opacity: 1 }}
+            >
+              Sign up
+            </motion.button>
             <motion.button
               type="button"
               onClick={handleCloseModal}
@@ -254,18 +268,6 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
               whileFocus={{ scale: 1.05, opacity: 1 }}
             >
               Cancel
-            </motion.button>
-            <motion.button
-              type="submit"
-              className={`mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500 ${
-                !errors.length > 0 ? "cursor-pointer" : "disabled cursor-not-allowed"
-              }`}
-              ref={submitButtonRef}
-              variants={inputVariants}
-              whileHover={{ opacity: 1 }}
-              whileFocus={{ scale: 1.05, opacity: 1 }}
-            >
-              Sign up
             </motion.button>
           </div>
         </form>
