@@ -96,7 +96,7 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
       initial="hidden"
       animate={modalVisible ? "visible" : "hidden"}
     >
-      <div className="bg-slate-800 rounded-3xl shadow-xl w-10/12 p-4 py-8">
+      <div className="bg-slate-800 rounded-3xl shadow-xl w-10/12 p-4 pb-10 py-8">
         <h2 className=" text-center text-xl text-gray-200 font-bold mt-4">
           Login with your account
         </h2>
