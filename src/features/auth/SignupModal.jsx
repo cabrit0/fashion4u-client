@@ -48,13 +48,13 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
           </div>
           <div className="mt-8 mx-4 flex justify-start">
             <button
-              className="mx-2 text-sm sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-2 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-yellow border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-slate-800 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
+              className="mx-1 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-2 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-yellow border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-slate-800 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
               onClick={() => setModalVisible(false)}
             >
               Sign up
             </button>
             <button
-              className="mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-red-600 border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-slate-800 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
+              className="mx-1 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-red-600 border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-slate-800 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
               onClick={() => setModalVisible(false)}
             >
               Cancel
