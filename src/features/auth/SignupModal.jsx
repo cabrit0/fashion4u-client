@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { signup } from "../api/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
 
 const SignupModal = ({ modalVisible, setModalVisible }) => {
   const [nameError, setNameError] = useState(false);
@@ -31,6 +32,39 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const containerVariants = {
+    hidden: {
+      opacity: 0,
+      x: "-100vw",
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        mass: 0.4,
+        damping: 8,
+        when: "beforeChildren",
+        staggerChildren: 0.4,
+      },
+    },
+  };
+
+  const inputVariants = {
+    hidden: {
+      y: 20,
+      opacity: 0,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+      },
+    },
   };
 
   const handleCloseModal = () => {
