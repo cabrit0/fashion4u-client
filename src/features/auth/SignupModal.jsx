@@ -12,7 +12,8 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState("type");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const dispatch = useDispatch();
 
@@ -48,13 +49,23 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
       setErrors([...errors, emailError]);
       return;
     }
-    setErrors([]);
+
     try {
       await dispatch(signup(userData));
-      setModalVisible(false);
+      setSuccessMessage("Account created! Please try to login now.");
+      //setModalVisible(false);
     } catch (err) {
       console.log(err);
     }
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPasswordConfirm("");
+    setNameError(false);
+    setEmailError(false);
+    setPasswordError(false);
+    setPasswordConfirmError(false);
+    setErrors([]);
   };
 
   const formVariants = {
@@ -101,6 +112,7 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
     setPasswordConfirmError(false);
     setModalVisible(false);
     setErrors([]);
+    setSuccessMessage("");
   };
 
   const handleChange = (event) => {
@@ -154,6 +166,7 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
         setErrors([]);
       }
     }
+    setErrors([]);
   };
 
   return (
@@ -166,9 +179,16 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
       animate={modalVisible ? "visible" : "hidden"}
     >
       <div className="bg-slate-800 rounded-3xl shadow-xl w-10/12 p-4">
-        <h2 className=" text-center text-xl text-gray-200 font-bold mt-4">
-          Sign up an account
-        </h2>
+        {successMessage ? (
+          <p className="mt-6 text-center text-lg font-bold opacity-80 text-lux-green">
+            {successMessage}
+          </p>
+        ) : (
+          <h2 className=" text-center text-xl text-gray-200 font-bold mt-4">
+            Sign up an account
+          </h2>
+        )}
+
         <form className="mx-12 py-4" onSubmit={handleSubmit}>
           <div className="my-4">
             <label className="block text-gray-200 font-medium mb-2">Name</label>

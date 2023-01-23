@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { login } from "../api/authSlice";
@@ -9,6 +10,27 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [errors, setErrors] = useState("type");
+
+  const errorsRef = useRef(errors);
+  const submitButtonRef = useRef();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    errorsRef.current = errors;
+  }, [errors]);
+
+  useEffect(() => {
+    const inputValues = [email, password];
+    const hasErrors = errorsRef.current.length > 0;
+
+    if (inputValues.some((value) => !value) || hasErrors) {
+      submitButtonRef.current.setAttribute("disabled", true);
+    } else {
+      submitButtonRef.current.removeAttribute("disabled");
+    }
+  }, [email, password, errorsRef]);
 
   const formVariants = {
     hidden: {
@@ -54,6 +76,7 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
         )
       ) {
         setEmailError(true);
+        setErrors([...errors, "email required"]);
       } else {
         setEmailError(false);
       }
@@ -62,10 +85,12 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
       setPassword(value);
       if (value.length < 6) {
         setPasswordError(true);
+        setErrors([...errors, "password required"]);
       } else {
         setPasswordError(false);
       }
     }
+    setErrors([]);
   };
 
   const handleCloseModal = () => {
@@ -78,10 +103,12 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors([]);
     const userData = { email: email, password: password };
     try {
       dispatch(login(userData));
       setModalVisible(false);
+      navigate("/user");
     } catch (err) {
       console.log(err);
     }
@@ -143,7 +170,12 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
           </div>
           <div className="mt-8 mx-4 flex justify-start">
             <motion.button
-              className="mx-2 sm:mx-4 bg-transparent text-gray-100 opacity-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-green border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-600 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
+              className={`mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500 ${
+                !errors.length > 0
+                  ? "cursor-pointer"
+                  : "disabled cursor-not-allowed"
+              }`}
+              ref={submitButtonRef}
               onClick={() => setModalVisible(false)}
               variants={inputVariants}
               whileHover={{ opacity: 1 }}
