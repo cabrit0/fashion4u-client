@@ -68,8 +68,8 @@ export const login = (userData) => async (dispatch) => {
     const response = await axiosInstance.post("users/login", userData);
     dispatch(loginSuccess(response.data));
     console.log(response.data);
-  } catch (response) {
-    dispatch(loginFailed(response));
+  } catch (err) {
+    dispatch(loginFailed(err));
   }
 };
 

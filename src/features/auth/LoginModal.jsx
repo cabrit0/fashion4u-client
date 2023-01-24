@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../api/authSlice";
 
 const LoginModal = ({ modalVisible, setModalVisible }) => {
@@ -10,7 +10,8 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [errors, setErrors] = useState("type");
+  const [errors, setErrors] = useState("");
+  const [authError, setAuthError] = useState("");
 
   const errorsRef = useRef(errors);
   const submitButtonRef = useRef();
@@ -103,14 +104,18 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors([]);
+    //setErrors([]);
     const userData = { email: email, password: password };
     try {
-      dispatch(login(userData));
-      setModalVisible(false);
-      navigate("/user");
-    } catch (err) {
-      console.log(err);
+      const response = await dispatch(login(userData));
+      if (response.status >= 200 && response.status < 300) {
+        setModalVisible(false);
+        navigate("/user");
+      } else {
+        setAuthErrors("User not found, Credentials are invalid");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -124,9 +129,15 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
       animate={modalVisible ? "visible" : "hidden"}
     >
       <div className="bg-slate-800 rounded-3xl shadow-xl w-10/12 p-4 pb-10 py-8">
-        <h2 className=" text-center text-xl text-gray-200 font-bold mt-4">
-          Login with your account
-        </h2>
+        {authError ? (
+          <p className="text-red-500 opacity-75 text-center font-bold">
+            {authError}
+          </p>
+        ) : (
+          <h2 className=" text-center text-xl text-gray-200 font-bold mt-4">
+            Login with your account
+          </h2>
+        )}
         <form className="mx-12 py-4" onSubmit={handleSubmit}>
           <div className="my-4">
             <label className="block text-gray-200 font-medium mb-2">
@@ -176,7 +187,7 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
                   : "disabled cursor-not-allowed"
               }`}
               ref={submitButtonRef}
-              onClick={() => setModalVisible(false)}
+              //onClick={() => setModalVisible(false)}
               variants={inputVariants}
               whileHover={{ opacity: 1 }}
               whileFocus={{ scale: 1.05, opacity: 1 }}
