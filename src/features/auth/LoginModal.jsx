@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../api/authSlice";
+import { login } from "./authSlice";
 
 const LoginModal = ({ modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
