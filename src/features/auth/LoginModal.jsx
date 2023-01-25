@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "./authSlice";
+import { login, selectUser } from "./authSlice";
 
 const LoginModal = ({ modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
@@ -12,6 +12,8 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [errors, setErrors] = useState("");
   const [authError, setAuthError] = useState("");
+
+  const user = useSelector(selectUser);
 
   const errorsRef = useRef(errors);
   const submitButtonRef = useRef();
@@ -108,14 +110,15 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
     const userData = { email: email, password: password };
     try {
       const response = await dispatch(login(userData));
-      if (response.status >= 200 && response.status < 300) {
+      console.log(response);
+      if (!response.error) {
         setModalVisible(false);
         navigate("/user");
       } else {
-        setAuthErrors("User not found, Credentials are invalid");
+        setAuthError("User not found, Credentials are invalid");
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
