@@ -31,3 +31,7 @@
     radial-gradient(at 41% 98%, hsla(2, 96%, 66%, 1) 0px, transparent 50%),
     radial-gradient(at 72% 4%, hsla(198, 100%, 52%, 1) 0px, transparent 50%);
 }
+
+.containerX {
+  height: calc(100% - 80px - 60px);
+}

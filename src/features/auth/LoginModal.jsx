@@ -113,7 +113,7 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
       console.log(response);
       if (!response.error) {
         setModalVisible(false);
-        navigate("/user");
+        navigate("/user/home");
       } else {
         setAuthError("User not found, Credentials are invalid");
       }

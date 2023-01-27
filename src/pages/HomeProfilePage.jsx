@@ -1,14 +1,18 @@
 import React from "react";
 import Banner from "../components/Banner";
+import FeedBanner from "../components/FeedBanner";
 import Navigation from "../components/Navigation";
+import { useSelector } from "react-redux";
 
 const HomeProfilePage = () => {
+  const currentUser = useSelector((state) => state.auth.user);
+
   return (
     <div className="flex flex-col items-center">
       <Banner />
-      <h2 className="text-3xl text-center mt-24 text-lux-blue">
-        Home Profile Page
-      </h2>
+      <div className="overflow-hidden overflow-y-scroll no-scrollbar w-full">
+        <FeedBanner user={currentUser.user} />
+      </div>
       <Navigation />
     </div>
   );
