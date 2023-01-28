@@ -4,17 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-}
 
 /* background mesh gradient */
 .my-bgGradient {
@@ -33,5 +22,5 @@
 }
 
 .containerX {
-  height: calc(100% - 80px - 60px);
+  height: 560px;
 }

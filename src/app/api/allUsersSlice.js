@@ -1,17 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "./AxiosInstance";
 
 export const fetchAllUsers = createAsyncThunk(
   "users/fetchAllUsers",
   async (arg, thunkAPI) => {
-    const response = await axios.get(
-      "http://localhost:8080/api/v1/users/allUsers_",
-      {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.get("users/allUsers_", {
+      headers: {
+        Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+      },
+    });
     //console.log(response.data)
     return response.data;
   }

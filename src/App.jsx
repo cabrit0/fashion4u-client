@@ -12,7 +12,7 @@ import HomeProfilePage from "./pages/HomeProfilePage";
 function App() {
   return (
     <Provider store={store}>
-      <div className="App h-screen w-screen my-bgGradient font-Rampart">
+      <div className="App h-screen w-screen my-bgGradient font-Rampart ">
         <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />

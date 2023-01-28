@@ -10,13 +10,8 @@ const Banner = () => {
   const currentUser = useSelector((state) => state.auth.user);
   console.log(currentUser);
 
-/*   const handleMyProfileClick = () => {
-    dispatch(setCurrentPage("myProfile"));
-    navigate("/user/myProfile");
-  };
- */
   return (
-    <div className="top-0 w-full h-14 px-6 bg-slate-800 flex justify-between items-center rounded-b-2xl">
+    <div className="fixed top-0 w-full h-14 px-6 bg-slate-800 flex justify-between items-center rounded-b-2xl z-40">
       <h1 className="text-xl font-bold text-fuchsia-600 hover:scale-110 duration-300">
         Fashion4U
       </h1>

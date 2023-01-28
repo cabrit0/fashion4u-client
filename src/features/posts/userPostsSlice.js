@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "../../app/api/AxiosInstance";
 
 const userPostsSlice = createSlice({
   name: "userPosts",
@@ -22,36 +22,41 @@ const userPostsSlice = createSlice({
 export const { setUserPosts, addUserPost, removeUserPost } =
   userPostsSlice.actions;
 
-export const fetchUserPosts = () => async (dispatch) => {
-  try {
-    const { data } = await axios.get(
-      "http://localhost:8080/api/v1/posts"
-    );
-    dispatch(setUserPosts(data));
-  } catch (err) {
-    console.error(err);
+export const fetchUserPosts = createAsyncThunk(
+  "userPosts/fetchUserPosts",
+  async (arg, thunkAPI) => {
+    const response = await axiosInstance.get("/posts", {
+      headers: {
+        Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+      },
+    });
+    return response.data;
   }
-};
+);
 
-export const createUserPost = (postData) => async (dispatch) => {
-  try {
-    const { data } = await axios.post(
-      "http://localhost:8080/api/v1/posts",
-      postData
-    );
-    dispatch(addUserPost(data));
-  } catch (err) {
-    console.error(err);
+export const createUserPost = createAsyncThunk(
+  "userPosts/createUserPost",
+  async (postData, thunkAPI) => {
+    const response = await axiosInstance.post("/posts", postData, {
+      headers: {
+        Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+      },
+    });
+    console.log(response);
+    return response.data;
   }
-};
+);
 
-export const deleteUserPost = (postId) => async (dispatch) => {
-  try {
-    await axios.delete(`http://localhost:8080/api/v1/posts/${postId}`);
-    dispatch(removeUserPost(postId));
-  } catch (err) {
-    console.error(err);
+export const deleteUserPost = createAsyncThunk(
+  "userPosts/deleteUserPost",
+  async (postId, thunkAPI) => {
+    await axiosInstance.delete(`/posts/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+      },
+    });
+    return postId;
   }
-};
+);
 
 export default userPostsSlice.reducer;

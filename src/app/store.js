@@ -3,6 +3,7 @@ import authReducer from "../features/auth/authSlice";
 import pageReducer from "../pages/pageSlice";
 import allUsersReducer from "./api/allUsersSlice";
 import userPostsReducer from "../features/posts/userPostsSlice";
+import globalPostsReducer from "../features/posts/globalPostsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     auth: authReducer,
     allUsers: allUsersReducer,
     userPosts: userPostsReducer,
+    globalPosts: globalPostsReducer,
   },
 });
 

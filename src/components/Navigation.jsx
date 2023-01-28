@@ -12,7 +12,7 @@ const Navigation = () => {
   const dispatch = useDispatch();
 
   const currentPage = useSelector(getCurrentPage);
-  console.log(currentPage);
+  //console.log(currentPage);
 
   const handleStoreClick = () => {
     dispatch(setCurrentPage("store"));

@@ -70,7 +70,7 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
+    //console.log(name, value);
     if (name === "email") {
       setEmail(value);
       if (
@@ -110,7 +110,7 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
     const userData = { email: email, password: password };
     try {
       const response = await dispatch(login(userData));
-      console.log(response);
+      //console.log(response);
       if (!response.error) {
         setModalVisible(false);
         navigate("/user/home");
