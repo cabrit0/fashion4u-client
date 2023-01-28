@@ -30,12 +30,6 @@ const Banner = () => {
             <HiOutlineUsers className="text-xl font-bold text-fuchsia-600 hover:text-lux-yellow duration-300" />
           </Link>
           <Link
-            to="user/post"
-            className="px-2 py-1 bg-gray-800 rounded-md hover:scale-110  hover:translate-x-1 hover:-translate-y-1 duration-500"
-          >
-            <HiOutlinePlusCircle className="text-xl font-bold text-fuchsia-600 hover:text-lux-yellow duration-300" />
-          </Link>
-          <Link
             className="px-2 py-1 bg-gray-800 rounded-md"
             to="/user/myProfile"
           >

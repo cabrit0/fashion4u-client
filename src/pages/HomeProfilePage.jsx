@@ -15,7 +15,7 @@ const HomeProfilePage = () => {
 
   useEffect(() => {
     dispatch(fetchAllPosts());
-  }, []);
+  }, [dispatch]);
 
   console.log(posts.data);
 
@@ -33,7 +33,7 @@ const HomeProfilePage = () => {
       <div className="py-14 flex flex-col justify-center items-center over w-full">
         <FeedBanner user={currentUser.user} handleModalOpen={handleModalOpen} />
         {isModalOpen && <CreatePostModal handleModalClose={handleModalClose} />}
-        <div className="containerX overflow-scroll scrollbar-hide mt-4">
+        <div className="containerX overflow-scroll scrollbar-hide mt-2">
           {posts.data && <PostsFeed posts={posts.data} className="" />}
         </div>
       </div>

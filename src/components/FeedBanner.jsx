@@ -3,6 +3,8 @@ import Avatar from "./Avatar";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAllUsers, fetchAllUsers } from "../app/api/allUsersSlice";
 
+import { HiOutlinePlusCircle } from "react-icons/hi";
+
 const FeedBanner = ({ user, handleModalOpen }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user.user);
@@ -33,11 +35,11 @@ const FeedBanner = ({ user, handleModalOpen }) => {
             Show the world u're style for today
           </p>
         </div>
-        <button
-          className="text-fuchsia-600 border border-fuchsia-600 px-2 py-2 rounded-xl hover:border-none hover:text-gray-200 hover:bg-lux-purple hover:scale-110 duration-500"
-          onClick={handleModalOpen}
-        >
-          New post
+        <button className="text-fuchsia-600 " onClick={handleModalOpen}>
+          <span className="hidden sm:block border border-fuchsia-600 px-1 py-1 rounded-xl hover:border-none hover:text-gray-200 hover:bg-lux-purple hover:scale-110 duration-500">
+            add post
+          </span>
+          <HiOutlinePlusCircle className="text-3xl sm:hidden rounded-xl hover:text-gray-200 hover:bg-lux-purple hover:scale-110 duration-500" />
         </button>
       </div>
       <div className="flex py-2 px-4">{usersIFollow}</div>
