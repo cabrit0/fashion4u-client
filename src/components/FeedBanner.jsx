@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Avatar from "./Avatar";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAllUsers, fetchAllUsers } from "../app/api/AllUsersSlice";
+import { selectAllUsers, fetchAllUsers } from "../app/api/allUsersSlice";
 
 const FeedBanner = ({ user, handleModalOpen }) => {
   const dispatch = useDispatch();
