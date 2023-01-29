@@ -34,7 +34,11 @@ const HomeProfilePage = () => {
         <FeedBanner user={currentUser.user} handleModalOpen={handleModalOpen} />
         {isModalOpen && <CreatePostModal handleModalClose={handleModalClose} />}
         <div className="containerX overflow-scroll scrollbar-hide mt-2">
-          {posts.data && <PostsFeed posts={posts.data} className="" />}
+          {posts.data ? (
+            <PostsFeed posts={posts.data} className="" />
+          ) : (
+            <p>loading..</p>
+          )}
         </div>
       </div>
       <Navigation />

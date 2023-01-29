@@ -26,12 +26,18 @@ const PostsFeed = ({ posts }) => {
               </div>
               <p>{post.user.name}</p>
             </div>
-          ) : ""}
-          <img
-            src={post.image}
-            alt={post.description}
-            className="object-cover pb-2 rounded-2xl"
-          />
+          ) : (
+            <p>...</p>
+          )}
+          {post.image ? (
+            <img
+              src={post.image}
+              alt={post.description}
+              className="object-cover pb-2 rounded-2xl"
+            />
+          ) : (
+            <p>...</p>
+          )}
           <div className="flex justify-between px-6">
             <div className="flex">
               <div className="flex">
