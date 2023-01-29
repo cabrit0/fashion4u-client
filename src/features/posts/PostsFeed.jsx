@@ -19,12 +19,12 @@ const PostsFeed = ({ posts }) => {
     <div className=" text-gray-200">
       {posts.map((post, index) => (
         <div key={index} className="bg-slate-800 my-4 rounded-t-2xl">
-          <div className="flex justify-between items-center px-4 py-1">
+          {/* <div className="flex justify-between items-center px-4 py-1">
             <div>
-              {/* {post.user && <Avatar user={post.user} />} */}
+              {post.user && <Avatar user={post.user} />}
             </div>
             <p>{post.user.name}</p>
-          </div>
+          </div> */}
           <img
             src={post.image}
             alt={post.description}
