@@ -10,7 +10,7 @@ const initialState = {
 export const fetchAllPosts = createAsyncThunk(
   "globalPosts/fetchAllPosts",
   async (arg, thunkAPI) => {
-    const response = await axiosInstance.get("/allPosts_", {
+    const response = await axiosInstance.get("allPosts_", {
       headers: {
         Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
       },

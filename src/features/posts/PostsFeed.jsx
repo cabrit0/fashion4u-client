@@ -17,11 +17,12 @@ const PostsFeed = ({ posts }) => {
     setShowComment(newShowComment);
   };
 
-  const handleLike = (index) => {
-    const newLikes = [...likes];
-    newLikes[index] = newLikes[index] + 1 || 1;
-    setLikes(newLikes);
-    dispatch(likePost(posts[index].id));
+  const handleLike = (id) => {
+/*     const newLikes = [...likes];
+    newLikes[id] = newLikes[id] + 1 || 1;
+    setLikes(newLikes); */
+    const res = dispatch(likePost(id));
+    console.log(res);
   };
 
   console.log(posts);
@@ -29,7 +30,7 @@ const PostsFeed = ({ posts }) => {
   return (
     <div className=" text-gray-200">
       {posts.map((post, index) => (
-        <div key={index} className="bg-slate-800 my-4 rounded-t-2xl">
+        <div key={post._id} className="bg-slate-800 my-4 rounded-t-2xl">
           <div className="flex justify-between items-center px-4 py-1">
             <div>
               <Avatar height="8" width="8" user={post.user} />
@@ -48,7 +49,7 @@ const PostsFeed = ({ posts }) => {
           <div className="flex justify-between px-6">
             <div className="flex">
               <div className="flex">
-                <button onClick={() => handleLike(index)}>
+                <button onClick={() => handleLike(post._id)}>
                   {/* send postID */}
                   <RiHeart2Line className="text-lux-pink text-xl hover:scale-105 hover:translate-x-0.5 hover:-translate-y-1 duration-500" />
                 </button>
@@ -72,8 +73,9 @@ const PostsFeed = ({ posts }) => {
               <div className="flex justify-between items-center py-1 px-4 my-1 bg-slate-800 rounded-2xl ">
                 <p>{comment.comment.text}</p>
                 <div className="flex items-center">
-                  <Avatar width="8" height="8" user={post.user} />
-                  <p className="ml-2 text-sm">{comment.comment.user.name}</p>
+                  {/* <Avatar width="8" height="8" user={post.user} /> */}
+
+                  <p className="ml-2 text-xs">{comment.comment.user.name}</p>
                 </div>
               </div>
             ))}

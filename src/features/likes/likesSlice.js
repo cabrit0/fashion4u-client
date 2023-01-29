@@ -1,5 +1,55 @@
 import axiosInstance from "../../app/api/axiosInstance";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const likePost = createAsyncThunk("like/likePost", async (postId) => {
+  const response = await axiosInstance.put(`likes/like/posts/${postId}`, {
+    headers: {
+      Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+    },
+  });
+  console.log(response);
+  return response;
+});
+
+export const unlikePost = createAsyncThunk(
+  "like/unlikePost",
+  async (postId) => {
+    const response = await axiosInstance.put("likes/unlike/posts", postId, {
+      headers: {
+        Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+      },
+    });
+    return response.data.data;
+  }
+);
+
+export const likeComment = createAsyncThunk(
+  "like/likeComment",
+  async (commentId) => {
+    const response = await axiosInstance.put("likes/like/comments", commentId, {
+      headers: {
+        Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+      },
+    });
+    return response.data.data;
+  }
+);
+
+export const unlikeComment = createAsyncThunk(
+  "like/unlikeComment",
+  async (commentId) => {
+    const response = await axiosInstance.put(
+      "likes/unlike/comments",
+      commentId,
+      {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+        },
+      }
+    );
+    return response.data.data;
+  }
+);
 
 const likeSlice = createSlice({
   name: "like",
@@ -75,45 +125,5 @@ export const {
   unlikeCommentSuccess,
   unlikeCommentFailure,
 } = likeSlice.actions;
-
-export const likePost = (postId) => async (dispatch) => {
-  try {
-    dispatch(likePostStart());
-    const res = await axiosInstance.put(`likes/like/posts`);
-    dispatch(likePostSuccess(res.data.data));
-  } catch (error) {
-    dispatch(likePostFailure(error.message));
-  }
-};
-
-export const unlikePost = (postId) => async (dispatch) => {
-  try {
-    dispatch(unlikePostStart());
-    const res = await axiosInstance.put(`likes/like/posts`);
-    dispatch(unlikePostSuccess(res.data.data));
-  } catch (error) {
-    dispatch(unlikePostFailure(error.message));
-  }
-};
-
-export const likeComment = (commentId) => async (dispatch) => {
-  try {
-    dispatch(likeCommentStart());
-    const res = await axiosInstance.put(likes`/like/comments`);
-    dispatch(likeCommentSuccess(res.data.data));
-  } catch (error) {
-    dispatch(likeCommentFailure(error.message));
-  }
-};
-
-export const unlikeComment = (commentId) => async (dispatch) => {
-  try {
-    dispatch(unlikeCommentStart());
-    const res = await axiosInstance.put(`likes/like/comments`);
-    dispatch(unlikeCommentSuccess(res.data.data));
-  } catch (error) {
-    dispatch(unlikeCommentFailure(error.message));
-  }
-};
 
 export default likeSlice.reducer;
