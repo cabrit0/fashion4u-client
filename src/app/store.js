@@ -4,6 +4,8 @@ import pageReducer from "../pages/pageSlice";
 import allUsersReducer from "./api/allUsersSlice";
 import userPostsReducer from "../features/posts/userPostsSlice";
 import globalPostsReducer from "../features/posts/globalPostsSlice";
+import likesReducer from "../features/likes/likesSlice";
+import commentsReducer from "../features/comments/commentsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     allUsers: allUsersReducer,
     userPosts: userPostsReducer,
     globalPosts: globalPostsReducer,
+    likes: likesReducer,
+    comments: commentsReducer,
   },
 });
 

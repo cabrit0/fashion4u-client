@@ -19,7 +19,13 @@ const FeedBanner = ({ user, handleModalOpen }) => {
   );
 
   const usersIFollow = currentUserFollowing.map((user) => (
-    <Avatar className="hover:scale-105" key={user._id} user={user} />
+    <Avatar
+      width="10"
+      height="10"
+      className="hover:scale-105"
+      key={user._id}
+      user={user}
+    />
   ));
 
   //console.log(allUsers, currentUserFollowing);

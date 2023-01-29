@@ -33,7 +33,7 @@ const Banner = () => {
             className="px-2 py-1 bg-gray-800 rounded-md"
             to="/user/myProfile"
           >
-            <Avatar className="" user={currentUser.user} />
+            <Avatar width="10" height="10" className="" user={currentUser.user} />
           </Link>
         </div>
       )}
