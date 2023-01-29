@@ -17,7 +17,7 @@ const HomeProfilePage = () => {
     dispatch(fetchAllPosts());
   }, [dispatch]);
 
-  console.log(posts.data);
+  //console.log(posts.data);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
