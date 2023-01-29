@@ -1,7 +1,9 @@
-import React from "react";
-
 const Avatar = ({ user }) => {
   let initials;
+  if (!user) {
+    return null;
+  }
+
   if (user.avatar) {
     return (
       <img
@@ -11,6 +13,9 @@ const Avatar = ({ user }) => {
       />
     );
   } else {
+    if (!user.name) {
+      return null;
+    }
     initials = user.name
       .split(" ")
       .map((name) => name[0].toUpperCase())

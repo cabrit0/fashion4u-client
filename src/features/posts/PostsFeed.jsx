@@ -19,16 +19,12 @@ const PostsFeed = ({ posts }) => {
     <div className=" text-gray-200">
       {posts.map((post, index) => (
         <div key={index} className="bg-slate-800 my-4 rounded-t-2xl">
-          {post.user ? (
-            <div className="flex justify-between items-center px-4 py-1">
-              <div>
-                <Avatar user={post.user} />
-              </div>
-              <p>{post.user.name}</p>
+          <div className="flex justify-between items-center px-4 py-1">
+            <div>
+              <Avatar user={post.user} />
             </div>
-          ) : (
-            <p>...</p>
-          )}
+            <p>{post.user.name}</p>
+          </div>
           {post.image ? (
             <img
               src={post.image}

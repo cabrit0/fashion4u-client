@@ -10,6 +10,7 @@ import PostsFeed from "../features/posts/PostsFeed";
 const HomeProfilePage = () => {
   const currentUser = useSelector((state) => state.auth.user);
   const posts = useSelector((state) => state.globalPosts.posts);
+  //const t = useSelector((state) => state.globalPosts);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -17,7 +18,7 @@ const HomeProfilePage = () => {
     dispatch(fetchAllPosts());
   }, [dispatch]);
 
-  //console.log(posts.data);
+  console.log(posts);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
