@@ -32,9 +32,14 @@ const HomeProfilePage = () => {
     <div className="flex flex-col justify-center items-center w-screen px-2">
       <Banner className="" />
       <div className="py-14 flex flex-col justify-center items-center over w-full">
-        <FeedBanner user={currentUser.user} handleModalOpen={handleModalOpen} />
-        {isModalOpen && <CreatePostModal handleModalClose={handleModalClose} />}
         <div className="containerX overflow-scroll scrollbar-hide mt-2">
+          <FeedBanner
+            user={currentUser.user}
+            handleModalOpen={handleModalOpen}
+          />
+          {isModalOpen && (
+            <CreatePostModal handleModalClose={handleModalClose} />
+          )}
           {posts.data ? (
             <PostsFeed posts={posts.data} className="" />
           ) : (
