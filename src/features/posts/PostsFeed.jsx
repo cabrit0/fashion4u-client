@@ -35,11 +35,12 @@ const PostsFeed = ({ posts }) => {
 
   const handleCreateComment = (postId, text) => {
     const body = { postId, text };
-    const response = dispatch(createComment(body));
+    //const response = dispatch(createComment(body));
+    dispatch(createComment(body));
     //console.log(response, body);
+    setUpdate(true);
     setText('')
     toggleComment()
-    setUpdate(true);
   };
 
   useEffect(() => {
