@@ -4,7 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* background mesh gradient */
 .my-bgGradient {
   background-color: hsla(328, 55%, 39%, 1);

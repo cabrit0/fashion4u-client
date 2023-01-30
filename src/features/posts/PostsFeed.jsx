@@ -3,14 +3,17 @@ import Avatar from "../../components/Avatar";
 import { useDispatch } from "react-redux";
 import { likePost, likeComment } from "../likes/likesSlice";
 import { fetchAllPosts } from "../../features/posts/globalPostsSlice";
+import { createComment } from "../comments/commentsSlice";
 
 import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri";
 import { TfiCommentAlt, TfiComment } from "react-icons/tfi";
+import { comment } from "postcss";
 
 const PostsFeed = ({ posts }) => {
   const dispatch = useDispatch();
   const [showComment, setShowComment] = useState([]);
-  const[update, setUpdate] = useState(false);
+  const [text, setText] = useState("");
+  const [update, setUpdate] = useState(false);
 
   const toggleComment = (index) => {
     const newShowComment = [...showComment];
@@ -21,18 +24,27 @@ const PostsFeed = ({ posts }) => {
   const handleLikePost = (id) => {
     const response = dispatch(likePost(id));
     console.log(response, id);
-    setUpdate(true)
+    setUpdate(true);
   };
 
   const handleLikeComment = (id) => {
     const response = dispatch(likeComment(id));
     console.log(response, id);
-    setUpdate(true)
+    setUpdate(true);
+  };
+
+  const handleCreateComment = (postId, text) => {
+    const body = { postId, text };
+    const response = dispatch(createComment(body));
+    //console.log(response, body);
+    setText('')
+    toggleComment()
+    setUpdate(true);
   };
 
   useEffect(() => {
     dispatch(fetchAllPosts());
-    setUpdate(false)
+    setUpdate(false);
   }, [update]);
 
   return (
@@ -111,8 +123,13 @@ const PostsFeed = ({ posts }) => {
                 <textarea
                   className="w-11/12 px-4 text-gra-200 font-bold bg-lux-purple rounded-xl focus:scale-105 duration-500"
                   placeholder="Leave a comment"
+                  name="text"
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
                 ></textarea>
-                <button>Comment</button>
+                <button onClick={() => handleCreateComment(post._id, text)}>
+                  Comment
+                </button>
               </div>
             )}
           </div>

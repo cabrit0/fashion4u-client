@@ -1,162 +1,155 @@
-import axiosInstance from "../../app/api/axiosInstance";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import axiosInstance from "../../app/api/axiosInstance";
 
-const initialState = {
-  comments: [],
-  comment: {},
-  error: null,
-  loading: false,
-};
-
-const createComment = createAsyncThunk(
-  "comments/createComment",
-  async (comment, thunkAPI) => {
-    try {
-      const response = await axiosInstance.post("/comments", comment);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
+export const fetchComment = createAsyncThunk(
+  "comments/fetchComment",
+  async (postId, thunkAPI) => {
+    const response = await axiosInstance.get(
+      "comments/",
+      { postId },
+      {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+        },
+      }
+    );
+    console.log(response, id);
+    return response;
   }
 );
 
-const getComments = createAsyncThunk(
-  "comments/getComments",
-  async (params, thunkAPI) => {
-    try {
-      const response = await axiosInstance.get("/comments", { params });
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
+export const fetchComments = createAsyncThunk(
+  "comments/fetchComments",
+  async (postId, thunkAPI) => {
+    const response = await axiosInstance.get(
+      "comments/",
+      { params: { postId } },
+      {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+        },
+      }
+    );
+    console.log(response, id);
+    return response;
   }
 );
 
-const getComment = createAsyncThunk(
-  "comments/getComment",
-  async (id, thunkAPI) => {
-    try {
-      const response = await axiosInstance.get(`/comments/${id}`);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
+export const createComment = createAsyncThunk(
+  "comments/",
+  async (body, thunkAPI) => {
+    const response = await axiosInstance.post(
+      "comments/",
+      { body },
+      {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+        },
+      }
+    );
+    console.log(response, body);
+    return response;
   }
 );
 
-const updateComment = createAsyncThunk(
+export const updateComment = createAsyncThunk(
   "comments/updateComment",
-  async (comment, thunkAPI) => {
-    try {
-      const response = await axiosInstance.put(
-        `/comments/${comment._id}`,
-        comment
-      );
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
+  async (commentData, thunkAPI) => {
+    const { id, ...rest } = commentData;
+    const response = await axiosInstance.put(`comments/${id}`, rest, {
+      headers: {
+        Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+      },
+    });
+    return response.data;
   }
 );
 
-const deleteComment = createAsyncThunk(
+export const deleteComment = createAsyncThunk(
   "comments/deleteComment",
   async (id, thunkAPI) => {
-    try {
-      await axiosInstance.delete(`/comments/${id}`);
-      return id;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
+    await axiosInstance.delete(`comments/${id}`, {
+      headers: {
+        Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+      },
+    });
+    return id;
   }
 );
 
-const commentsSlice = createSlice({
+const commentSlice = createSlice({
   name: "comments",
-  initialState,
-  reducers: {
-    setComments: (state, action) => {
-      state.comments = action.payload;
-      state.loading = false;
-    },
-    setComment: (state, action) => {
-      state.comment = action.payload;
-      state.loading = false;
-    },
-    setLoading: (state) => {
-      state.loading = true;
-    },
-    setError: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-    },
-    clearError: (state) => {
-      state.error = null;
-    },
+  initialState: {
+    comments: [],
+    comment: {},
+    isLoading: false,
+    error: null,
   },
+  reducers: {},
   extraReducers: {
+    [fetchComment.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [fetchComment.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.comment = action.payload;
+    },
+    [fetchComment.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
+    },
+    [fetchComments.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [fetchComments.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.comments = action.payload;
+    },
+    [fetchComments.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
+    },
     [createComment.pending]: (state) => {
-      state.loading = true;
+      state.isLoading = true;
     },
     [createComment.fulfilled]: (state, action) => {
-      state.comments.unshift([action.payload]);
-      state.loading = false;
+      state.isLoading = false;
+      state.comments.unshift(action.payload);
     },
     [createComment.rejected]: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-    },
-    [getComments.pending]: (state) => {
-      state.loading = true;
-    },
-    [getComments.fulfilled]: (state, action) => {
-      state.comments = action.payload;
-      state.loading = false;
-    },
-    [getComments.rejected]: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-    },
-    [getComment.pending]: (state) => {
-      state.loading = true;
-    },
-    [getComment.fulfilled]: (state, action) => {
-      state.comment = action.payload;
-      state.loading = false;
-    },
-    [getComment.rejected]: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
+      state.isLoading = false;
+      state.error = action.error.message;
     },
     [updateComment.pending]: (state) => {
-      state.loading = true;
+      state.isLoading = true;
     },
     [updateComment.fulfilled]: (state, action) => {
+      state.isLoading = false;
       state.comments = state.comments.map((comment) =>
-        comment._id === action.payload._id ? action.payload : comment
+        comment.id === action.payload.id ? action.payload : comment
       );
-      state.loading = false;
+      state.comment = action.payload;
     },
     [updateComment.rejected]: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
+      state.isLoading = false;
+      state.error = action.error.message;
     },
     [deleteComment.pending]: (state) => {
-      state.loading = true;
+      state.isLoading = true;
     },
     [deleteComment.fulfilled]: (state, action) => {
+      state.isLoading = false;
       state.comments = state.comments.filter(
-        (comment) => comment._id !== action.payload
+        (comment) => comment.id !== action.payload
       );
-      state.loading = false;
     },
     [deleteComment.rejected]: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
+      state.isLoading = false;
+      state.error = action.error.message;
     },
   },
 });
 
-export const { setComments, setComment, setLoading, setError, clearError } =
-  commentsSlice.actions;
-export default commentsSlice.reducer;
+export const {} = commentSlice.actions;
+export default commentSlice.reducer;

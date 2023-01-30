@@ -3,7 +3,7 @@
 // clothes and brands need to be selectors with descriptions
 //
 //
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createUserPost } from "./userPostsSlice";
 import { fetchAllPosts } from "./globalPostsSlice";
@@ -18,6 +18,7 @@ function CreatePostModal({ handleModalClose }) {
   });
   const [postCreated, setPostCreated] = useState(false);
   const message = "Your post has been created!";
+  const [update, setUpdate] = useState(false);
 
   const handleChange = (event) => {
     if (event.target.name === "image") {
@@ -43,11 +44,16 @@ function CreatePostModal({ handleModalClose }) {
     dispatch(createUserPost(data));
     console.log("FormData entries: ", [...data.entries()]);
     setPostCreated(true);
-    dispatch(fetchAllPosts());
+    setUpdate(true);
   };
 
+  useEffect(() => {
+    dispatch(fetchAllPosts());
+    setUpdate(false);
+  }, [update]);
+
   return (
-    <div className="fixed top-0 left-0 h-full w-full bg-black bg-opacity-60 flex items-center justify-center">
+    <div className="fixed top-0 left-0 z-50 h-full w-full bg-black bg-opacity-60 flex items-center justify-center">
       <div className="bg-slate-800 p-6 rounded-xl">
         {postCreated ? (
           <div className="px-10 py-8 flex flex-col justify-center items-center">

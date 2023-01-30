@@ -32,7 +32,7 @@ const HomeProfilePage = () => {
     <div className="flex flex-col justify-center items-center w-screen px-2">
       <Banner className="" />
       <div className="py-14 flex flex-col justify-center items-center over w-full">
-        <div className="containerX overflow-scroll scrollbar-hide mt-2">
+        <div className="containerX sm:containerXx overflow-scroll scrollbar-hide mt-2">
           <FeedBanner
             user={currentUser.user}
             handleModalOpen={handleModalOpen}
