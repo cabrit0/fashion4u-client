@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "../../components/Avatar";
 import { useDispatch } from "react-redux";
-import { likePost } from "../likes/likesSlice";
+import { likePost, likeComment } from "../likes/likesSlice";
+import { fetchAllPosts } from "../../features/posts/globalPostsSlice";
 
 import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri";
 import { TfiCommentAlt, TfiComment } from "react-icons/tfi";
@@ -9,7 +10,7 @@ import { TfiCommentAlt, TfiComment } from "react-icons/tfi";
 const PostsFeed = ({ posts }) => {
   const dispatch = useDispatch();
   const [showComment, setShowComment] = useState([]);
-  const [likes, setLikes] = useState([]);
+  const[update, setUpdate] = useState(false);
 
   const toggleComment = (index) => {
     const newShowComment = [...showComment];
@@ -17,15 +18,22 @@ const PostsFeed = ({ posts }) => {
     setShowComment(newShowComment);
   };
 
-  const handleLike = (id) => {
-/*     const newLikes = [...likes];
-    newLikes[id] = newLikes[id] + 1 || 1;
-    setLikes(newLikes); */
-    const res = dispatch(likePost(id));
-    console.log(res);
+  const handleLikePost = (id) => {
+    const response = dispatch(likePost(id));
+    console.log(response, id);
+    setUpdate(true)
   };
 
-  console.log(posts);
+  const handleLikeComment = (id) => {
+    const response = dispatch(likeComment(id));
+    console.log(response, id);
+    setUpdate(true)
+  };
+
+  useEffect(() => {
+    dispatch(fetchAllPosts());
+    setUpdate(false)
+  }, [update]);
 
   return (
     <div className=" text-gray-200">
@@ -49,7 +57,7 @@ const PostsFeed = ({ posts }) => {
           <div className="flex justify-between px-6">
             <div className="flex">
               <div className="flex">
-                <button onClick={() => handleLike(post._id)}>
+                <button onClick={() => handleLikePost(post._id)}>
                   {/* send postID */}
                   <RiHeart2Line className="text-lux-pink text-xl hover:scale-105 hover:translate-x-0.5 hover:-translate-y-1 duration-500" />
                 </button>
@@ -59,7 +67,9 @@ const PostsFeed = ({ posts }) => {
                 <button onClick={() => toggleComment(index)}>
                   <TfiComment className="text-lux-blue hover:scale-105 hover:translate-x-0.5 hover:-translate-y-1 duration-500" />
                 </button>
-                <p className="mx-2 text-gray-400"> {likes[index] || 0}</p>
+                <p className="mx-2 text-gray-400">
+                  {post.comments.length || 0}
+                </p>
               </div>
             </div>
             <div className="flex">
@@ -71,7 +81,22 @@ const PostsFeed = ({ posts }) => {
           <div className="bg-slate-900 rounded-t-2xl px-4 py-1 mx-2">
             {post.comments.map((comment) => (
               <div className="flex justify-between items-center py-1 px-4 my-1 bg-slate-800 rounded-2xl ">
-                <p>{comment.comment.text}</p>
+                <div>
+                  <p>{comment.comment.text}</p>
+                  <div>
+                    <div className="flex opacity-75">
+                      <button
+                        onClick={() => handleLikeComment(comment.comment._id)}
+                      >
+                        {/* send postID */}
+                        <RiHeart2Line className="text-lux-pink text-sm hover:scale-105 hover:translate-x-0.5 hover:-translate-y-1 duration-500" />
+                      </button>
+                      <p className="mx-2 text-gray-400">
+                        {comment.comment.likes.length || 0}
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <div className="flex items-center">
                   {/* <Avatar width="8" height="8" user={post.user} /> */}
 

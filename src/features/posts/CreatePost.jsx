@@ -6,6 +6,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createUserPost } from "./userPostsSlice";
+import { fetchAllPosts } from "./globalPostsSlice";
 
 function CreatePostModal({ handleModalClose }) {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function CreatePostModal({ handleModalClose }) {
     dispatch(createUserPost(data));
     console.log("FormData entries: ", [...data.entries()]);
     setPostCreated(true);
+    dispatch(fetchAllPosts());
   };
 
   return (
