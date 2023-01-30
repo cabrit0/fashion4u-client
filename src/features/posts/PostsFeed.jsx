@@ -37,8 +37,8 @@ const PostsFeed = ({ posts }) => {
     const body = { postId, text };
     const response = dispatch(createComment(body));
     //console.log(response, body);
-    setUpdate(true);
     setText('')
+    setUpdate(true);
     toggleComment()
   };
 
