@@ -7,6 +7,7 @@ import { createComment } from "../comments/commentsSlice";
 
 import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri";
 import { TfiCommentAlt, TfiComment } from "react-icons/tfi";
+import ModalAvatarProfile from "../follows/ModalAvatarProfile";
 
 const PostsFeed = ({ posts }) => {
   const dispatch = useDispatch();
@@ -15,18 +16,6 @@ const PostsFeed = ({ posts }) => {
   const [update, setUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState(null);
-
-/*  LEMBRAR DE FAZER A LOGICA PARA O USER CLICADO E NAO PARA O CURRENT USER  */
-
-  const currentUser = useSelector((state) => state.auth.user.user);
-  const allUsers = useSelector((state) => state.allUsers.allUsers);
-
-  const currentUserFollowing = allUsers.filter((user) =>
-    currentUser.following.includes(user._id)
-  );
-  const currentUserFollowers = allUsers.filter((user) =>
-    currentUser.followers.includes(user._id)
-  );
 
   const toggleComment = (index) => {
     const newShowComment = [...showComment];
@@ -58,7 +47,7 @@ const PostsFeed = ({ posts }) => {
   const handleShowAvatarProfile = (user) => {
     setUser(user);
     setShowModal(true);
-    console.log(currentUserFollowing);
+    //console.log(currentUserFollowing);
   };
 
   const closeModal = () => {
@@ -160,46 +149,7 @@ const PostsFeed = ({ posts }) => {
           </div>
         </div>
       ))}
-      {showModal && (
-        <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-90 flex items-center justify-center">
-          <div className="bg-slate-800 w-11/12 md:w-1/2 xl:w-1/3 p-6 rounded-lg shadow-3xl">
-            <div className="flex items-center mb-4">
-              <Avatar height="20" width="20" user={user} />
-              <h2 className="ml-4 text-gray-200 text-2xl font-medium">
-                {user.name}
-              </h2>
-            </div>
-            <p className="text-purple-400 mb-2">
-              Followers:{" "}
-              <span className="text-fuchsia-500">
-                {user.followers.length}
-              </span>
-            </p>
-            <p className="text-purple-400 mb-6">
-              Following:{" "}
-              <span className="text-fuchsia-500">
-                {user.following.length}
-              </span>
-            </p>
-            <div className="flex justify-center">
-              <button className="bg-lux-blue text-gray-200 font-bold py-1 px-2 mx-1 rounded-full hover:scale-105 hover:translate-x-1 hover:-translate-y-1 duration-500">
-                See {user.name} profile
-              </button>
-              <button className="bg-fuchsia-600 text-gray-200 font-bold py-1 px-2 mx-1 rounded-full hover:scale-105 hover:translate-x-1 hover:-translate-y-1 duration-500">
-                Follow {user.name}
-              </button>
-            </div>
-            <div className="w-full my-4 flex items-center justify-center">
-              <button
-                className=" bg-red-500 text-gray-200 font-bold py-1 px-4 rounded-full hover:scale-105 hover:translate-x-1 hover:-translate-y-1 duration-500"
-                onClick={() => setShowModal(false)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {showModal && <ModalAvatarProfile user={user} closeModal={closeModal} />}
     </div>
   );
 };

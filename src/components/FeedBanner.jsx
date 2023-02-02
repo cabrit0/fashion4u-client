@@ -8,10 +8,6 @@ import { HiOutlinePlusCircle } from "react-icons/hi";
 const FeedBanner = ({ user, handleModalOpen }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user.user);
-  useEffect(() => {
-    dispatch(fetchAllUsers());
-  }, []);
-
   const allUsers = useSelector((state) => state.allUsers.allUsers);
 
   const currentUserFollowing = allUsers.filter((user) =>
@@ -28,6 +24,9 @@ const FeedBanner = ({ user, handleModalOpen }) => {
     />
   ));
 
+  useEffect(() => {
+    dispatch(fetchAllUsers());
+  }, [usersIFollow.length]);
   //console.log(allUsers, currentUserFollowing);
 
   return (
