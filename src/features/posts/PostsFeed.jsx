@@ -172,13 +172,13 @@ const PostsFeed = ({ posts }) => {
             <p className="text-purple-400 mb-2">
               Followers:{" "}
               <span className="text-fuchsia-500">
-                {currentUserFollowers.length}
+                {user.followers.length}
               </span>
             </p>
             <p className="text-purple-400 mb-6">
               Following:{" "}
               <span className="text-fuchsia-500">
-                {currentUserFollowing.length}
+                {user.following.length}
               </span>
             </p>
             <div className="flex justify-center">
