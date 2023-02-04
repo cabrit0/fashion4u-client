@@ -35,13 +35,13 @@ const PostsFeed = ({ posts }) => {
     setUpdate(true);
   };
 
-  const handleCreateComment = (postId, text) => {
+  const handleCreateComment = (postId, text, index) => {
     const body = { postId, text };
     const response = dispatch(createComment(body));
     //console.log(response, body);
     setText("");
     setUpdate(true);
-    toggleComment();
+    toggleComment(index);
   };
 
   const handleShowAvatarProfile = (user) => {
@@ -141,7 +141,9 @@ const PostsFeed = ({ posts }) => {
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                 ></textarea>
-                <button onClick={() => handleCreateComment(post._id, text)}>
+                <button
+                  onClick={() => handleCreateComment(post._id, text, index)}
+                >
                   Comment
                 </button>
               </div>
