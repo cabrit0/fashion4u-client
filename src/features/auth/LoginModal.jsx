@@ -13,7 +13,8 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
   const [errors, setErrors] = useState("");
   const [authError, setAuthError] = useState("");
 
-  const user = useSelector(selectUser);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+  //console.log(isLoading);
 
   const errorsRef = useRef(errors);
   const submitButtonRef = useRef();
@@ -183,29 +184,35 @@ const LoginModal = ({ modalVisible, setModalVisible }) => {
             )}
           </div>
           <div className="mt-8 mx-4 flex justify-start">
-            <motion.button
-              className={`mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500 ${
-                !errors.length > 0
-                  ? "cursor-pointer"
-                  : "disabled cursor-not-allowed"
-              }`}
-              ref={submitButtonRef}
-              //onClick={() => setModalVisible(false)}
-              variants={inputVariants}
-              whileHover={{ opacity: 1 }}
-              whileFocus={{ scale: 1.05, opacity: 1 }}
-            >
-              Login
-            </motion.button>
-            <motion.button
-              className="mx-2 sm:mx-4 bg-transparent text-gray-100 opacity-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-red-500 border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
-              onClick={handleCloseModal}
-              variants={inputVariants}
-              whileHover={{ opacity: 1 }}
-              whileFocus={{ scale: 1.05, opacity: 1 }}
-            >
-              Cancel
-            </motion.button>
+            {isLoading ? (
+              <span className="loader"></span>
+            ) : (
+              <div>
+                <motion.button
+                  className={`mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500 ${
+                    !errors.length > 0
+                      ? "cursor-pointer"
+                      : "disabled cursor-not-allowed"
+                  }`}
+                  ref={submitButtonRef}
+                  //onClick={() => setModalVisible(false)}
+                  variants={inputVariants}
+                  whileHover={{ opacity: 1 }}
+                  whileFocus={{ scale: 1.05, opacity: 1 }}
+                >
+                  Login
+                </motion.button>
+                <motion.button
+                  className="mx-2 sm:mx-4 bg-transparent text-gray-100 opacity-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-red-500 border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
+                  onClick={handleCloseModal}
+                  variants={inputVariants}
+                  whileHover={{ opacity: 1 }}
+                  whileFocus={{ scale: 1.05, opacity: 1 }}
+                >
+                  Cancel
+                </motion.button>
+              </div>
+            )}
           </div>
         </form>
       </div>

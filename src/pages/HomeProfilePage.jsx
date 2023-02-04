@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { motion } from "framer-motion";
 import Banner from "../components/Banner";
 import FeedBanner from "../components/FeedBanner";
 import Navigation from "../components/Navigation";
@@ -10,15 +11,12 @@ import PostsFeed from "../features/posts/PostsFeed";
 const HomeProfilePage = () => {
   const currentUser = useSelector((state) => state.auth.user);
   const posts = useSelector((state) => state.globalPosts.posts);
-  //const t = useSelector((state) => state.globalPosts);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchAllPosts());
   }, [dispatch]);
-
-  //console.log(posts);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -29,9 +27,19 @@ const HomeProfilePage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-screen px-2">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="flex flex-col justify-center items-center w-screen px-2"
+    >
       <Banner className="" />
-      <div className="py-14 flex flex-col justify-center items-center over w-full">
+      <motion.div
+        className="py-14 flex flex-col justify-center items-center over w-full"
+        initial={{ y: "100vh" }}
+        animate={{ y: 0 }}
+        transition={{ type: "tween", duration: 0.5 }}
+      >
         <div className="containerX sm:containerXx overflow-scroll scrollbar-hide mt-2">
           <FeedBanner
             user={currentUser.user}
@@ -43,12 +51,12 @@ const HomeProfilePage = () => {
           {posts.data ? (
             <PostsFeed posts={posts.data} className="" />
           ) : (
-            <p>loading..</p>
+            <span className="loader"></span>
           )}
         </div>
-      </div>
+      </motion.div>
       <Navigation />
-    </div>
+    </motion.div>
   );
 };
 export default HomeProfilePage;

@@ -76,7 +76,7 @@ const PostsFeed = ({ posts }) => {
             <img
               src={post.image}
               alt={post.description}
-              className="object-cover pb-2 rounded-2xl"
+              className="object-cover pb-2 rounded-2xl w-11/12 h-60 md:w-3/6 md:h-3/6 mx-auto"
             />
           ) : (
             <p>...</p>
