@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { signup } from "./authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 const SignupModal = ({ modalVisible, setModalVisible }) => {
@@ -14,6 +14,9 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState("type");
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   const dispatch = useDispatch();
 
@@ -51,9 +54,13 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
     }
 
     try {
-      await dispatch(signup(userData));
-      setSuccessMessage("Account created! Please try to login now.");
-      //setModalVisible(false);
+      const response = await dispatch(signup(userData));
+      if (!response.error) {
+        setSuccessMessage("Account created! Please try to login now.");
+      } else {
+        //setModalVisible(false);
+        setErrorMessage("Something went wrong! Please try again");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -183,6 +190,10 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
           <p className="mt-6 text-center text-lg font-bold opacity-80 text-lux-green">
             {successMessage}
           </p>
+        ) : errorMessage ? (
+          <p className="mt-6 text-center text-lg font-bold opacity-80 text-red-600">
+            {errorMessage}
+          </p>
         ) : (
           <h2 className=" text-center text-xl text-gray-200 font-bold mt-4">
             Sign up an account
@@ -264,32 +275,36 @@ const SignupModal = ({ modalVisible, setModalVisible }) => {
               </p>
             )}
           </div>
-          <div className="my-8 flex justify-start">
-            <motion.button
-              type="submit"
-              className={`mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500 ${
-                !errors.length > 0
-                  ? "cursor-pointer"
-                  : "disabled cursor-not-allowed"
-              }`}
-              ref={submitButtonRef}
-              variants={inputVariants}
-              whileHover={{ opacity: 1 }}
-              whileFocus={{ scale: 1.05, opacity: 1 }}
-            >
-              Sign up
-            </motion.button>
-            <motion.button
-              type="button"
-              onClick={handleCloseModal}
-              className="mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-red-500 border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
-              variants={inputVariants}
-              whileHover={{ opacity: 1 }}
-              whileFocus={{ scale: 1.05, opacity: 1 }}
-            >
-              Cancel
-            </motion.button>
-          </div>
+          {isLoading ? (
+            <div className="loader"></div>
+          ) : (
+            <div className="my-8 flex justify-start">
+              <motion.button
+                type="submit"
+                className={`mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-lux-blue border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500 ${
+                  !errors.length > 0
+                    ? "cursor-pointer"
+                    : "disabled cursor-not-allowed"
+                }`}
+                ref={submitButtonRef}
+                variants={inputVariants}
+                whileHover={{ opacity: 1 }}
+                whileFocus={{ scale: 1.05, opacity: 1 }}
+              >
+                Sign up
+              </motion.button>
+              <motion.button
+                type="button"
+                onClick={handleCloseModal}
+                className="mx-2 sm:mx-4 bg-transparent text-gray-100 py-1 hover:py-2 px-3 sm:px-6 rounded-3xl hover:rounded-lg hover:bg-red-500 border-2 border-gray-100 font-bold hover:border-none hover:shadow-lg hover:text-gray-200 hover:translate-x-2 hover:-translate-y-2 hover:scale-110 duration-500"
+                variants={inputVariants}
+                whileHover={{ opacity: 1 }}
+                whileFocus={{ scale: 1.05, opacity: 1 }}
+              >
+                Cancel
+              </motion.button>
+            </div>
+          )}
         </form>
       </div>
     </motion.div>
