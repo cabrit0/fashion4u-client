@@ -5,7 +5,12 @@ export const getProfile = createAsyncThunk(
   "users/getProfile",
   async (userData, thunkAPI) => {
     try {
-      const response = await axiosInstance.get("users/profile");
+      const response = await axiosInstance.get("users/profile", {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
+        },
+      });
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
@@ -56,17 +61,20 @@ export const uploadAvatar = createAsyncThunk(
   "users/uploadAvatar",
   async (avatar, thunkAPI) => {
     try {
-      console.log(avatar);
+      const formData = new FormData();
+      formData.append("avatar", avatar);
+
       const response = await axiosInstance.put(
         "users/avatar/upload",
-        avatar,
+        formData,
         {
           headers: {
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
           },
         }
       );
-      console.log(response);
+
       return response;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
