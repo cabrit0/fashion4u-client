@@ -84,7 +84,7 @@ const MyPostsFeed = ({ posts }) => {
                     Most Liked Comments:
                   </p>
                   {sortedComments.slice(0, 2).map((comment, index) => (
-                    <div className="bg-slate-700 px-4 rounded-2xl">
+                    <div className="bg-slate-700 px-4 rounded-2xl shadow-xl">
                       <p key={index} className="text-gray-400 my-2">
                         {comment.text}{" "}
                         <span className="inline-block ml-4 text-xs text-yellow-600">
@@ -101,7 +101,7 @@ const MyPostsFeed = ({ posts }) => {
               )
             )}
             <button
-              className="mt-8 mx-2 px-2 py-1 text-fuchsia-600 font-bold border rounded-xl border-fuchsia-600 hover:shadow-xl hover:border-none hover:text-gray-300 hover:bg-fuchsia-600 hover:scale-110 hover:translate-x-1 hover:-translate-y-2 duration-500"
+              className="mt-8 mx-4 px-2 py-1 text-fuchsia-600 font-bold border rounded-xl border-fuchsia-600 hover:shadow-xl hover:border-none hover:text-gray-300 hover:bg-fuchsia-600 hover:scale-110 hover:translate-x-1 hover:-translate-y-2 duration-500"
               onClick={handleViewAllComments}
             >
               {viewAllComments ? "Hide comments" : "View all comments"}
@@ -111,7 +111,7 @@ const MyPostsFeed = ({ posts }) => {
                 {dateSortedComments.map((comment) => (
                   <div
                     key={comment._id}
-                    className="flex items-center mb-2 py-0.5 text-gray-400 bg-slate-700 px-4 rounded-2xl"
+                    className="flex items-center mb-2 py-0.5 text-gray-400 bg-slate-700 px-4 rounded-2xl shadow-xl"
                   >
                     <div className="w-11/12 pl-2">
                       <p className="text-sm">{comment.text}</p>

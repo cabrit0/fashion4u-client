@@ -110,7 +110,7 @@ const PostsFeed = ({ posts }) => {
           ) : (
             <div className="bg-slate-900 rounded-t-2xl h-32 px-4 py-1 mx-2 overflow-y-auto no-scrollbar">
               {post.comments.map((comment) => (
-                <div className="flex justify-between items-center py-1 px-4 my-1 bg-slate-800 rounded-2xl">
+                <div className="flex justify-between items-center py-1 px-4 my-2 bg-slate-800 rounded-2xl shadow-xl">
                   <div>
                     <p>{comment.comment.text}</p>
                     <div>
