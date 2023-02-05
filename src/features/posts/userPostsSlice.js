@@ -25,7 +25,7 @@ export const { setUserPosts, addUserPost, removeUserPost } =
 export const fetchUserPosts = createAsyncThunk(
   "userPosts/fetchUserPosts",
   async (arg, thunkAPI) => {
-    const response = await axiosInstance.get("/posts", {
+    const response = await axiosInstance.get("posts/", {
       headers: {
         Authorization: `Bearer ${thunkAPI.getState().auth.user.token}`,
       },
