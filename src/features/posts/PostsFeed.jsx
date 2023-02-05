@@ -79,7 +79,7 @@ const PostsFeed = ({ posts }) => {
               className="object-cover pb-2 rounded-2xl w-11/12 h-60 md:w-3/6 md:h-3/6 mx-auto"
             />
           ) : (
-            <p>...</p>
+            <span className="loader"></span>
           )}
           <div className="flex justify-between px-6">
             <div className="flex">
@@ -105,32 +105,36 @@ const PostsFeed = ({ posts }) => {
             </div>
           </div>
           <p className="px-4 py-1 pb-4 text-gray-300">{post.text}</p>
-          <div className="bg-slate-900 rounded-t-2xl px-4 py-1 mx-2">
-            {post.comments.map((comment) => (
-              <div className="flex justify-between items-center py-1 px-4 my-1 bg-slate-800 rounded-2xl ">
-                <div>
-                  <p>{comment.comment.text}</p>
+          {post.comments.length === 0 ? (
+            <div className="bg-slate-900 rounded-t-2xl px-4 py-1 mx-2"></div>
+          ) : (
+            <div className="bg-slate-900 rounded-t-2xl h-32 px-4 py-1 mx-2 overflow-y-auto no-scrollbar">
+              {post.comments.map((comment) => (
+                <div className="flex justify-between items-center py-1 px-4 my-1 bg-slate-800 rounded-2xl">
                   <div>
-                    <div className="flex opacity-75">
-                      <button
-                        onClick={() => handleLikeComment(comment.comment._id)}
-                      >
-                        <RiHeart2Line className="text-lux-pink text-sm hover:scale-105 hover:translate-x-0.5 hover:-translate-y-1 duration-500" />
-                      </button>
-                      <p className="mx-2 text-gray-400">
-                        {comment.comment.likes.length || 0}
-                      </p>
+                    <p>{comment.comment.text}</p>
+                    <div>
+                      <div className="flex opacity-75">
+                        <button
+                          onClick={() => handleLikeComment(comment.comment._id)}
+                        >
+                          <RiHeart2Line className="text-lux-pink text-sm hover:scale-105 hover:translate-x-0.5 hover:-translate-y-1 duration-500" />
+                        </button>
+                        <p className="mx-2 text-gray-400">
+                          {comment.comment.likes.length || 0}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center">
-                  {/* <Avatar width="8" height="8" user={post.user} /> */}
+                  <div className="flex items-center">
+                    {/* <Avatar width="8" height="8" user={post.user} /> */}
 
-                  <p className="ml-2 text-xs">{comment.comment.user.name}</p>
+                    <p className="ml-2 text-xs">{comment.comment.user.name}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
           <div>
             {showComment[index] && (
               <div className="w-full my-1 flex flex-col justify-center items-center">
