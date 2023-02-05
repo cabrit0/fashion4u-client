@@ -73,26 +73,32 @@ const MyPostsFeed = ({ posts }) => {
                 </p>
               </div>
             </div>
-            {!viewAllComments && (
-              <div className="mt-4 px-4">
-                <p className="font-medium text-yellow-500">
-                  Most Liked Comments:
-                </p>
-                {sortedComments.slice(0, 2).map((comment, index) => (
-                  <div className="bg-slate-700 px-4 rounded-2xl">
-                    <p key={index} className="text-gray-400 my-2">
-                      {comment.text}{" "}
-                      <span className="inline-block ml-4 text-xs text-yellow-600">
-                        (
-                        <span className="text-yellow-600">
-                          {comment.likes.length}
-                        </span>{" "}
-                        likes)
-                      </span>
-                    </p>
-                  </div>
-                ))}
-              </div>
+            {dateSortedComments.length === 0 ? (
+              <p className="font-bold text-yellow-500 my-2">
+                No comments in this post yet...
+              </p>
+            ) : (
+              !viewAllComments && (
+                <div className="mt-4 px-4">
+                  <p className="font-bold text-yellow-500">
+                    Most Liked Comments:
+                  </p>
+                  {sortedComments.slice(0, 2).map((comment, index) => (
+                    <div className="bg-slate-700 px-4 rounded-2xl">
+                      <p key={index} className="text-gray-400 my-2">
+                        {comment.text}{" "}
+                        <span className="inline-block ml-4 text-xs text-yellow-600">
+                          (
+                          <span className="text-yellow-600">
+                            {comment.likes.length}
+                          </span>{" "}
+                          likes)
+                        </span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )
             )}
             <button
               className="mt-8 mx-2 px-2 py-1 text-fuchsia-600 font-bold border rounded-xl border-fuchsia-600 hover:shadow-xl hover:border-none hover:text-gray-300 hover:bg-fuchsia-600 hover:scale-110 hover:translate-x-1 hover:-translate-y-2 duration-500"
@@ -113,11 +119,9 @@ const MyPostsFeed = ({ posts }) => {
                     <div className="w-1/12">
                       <p className="text-xs font-medium text-center flex flex-col items-center justify-center">
                         Likes:{" "}
-                        <div className="bg-lux-purple rounded-full w-5 h-5 flex items-center justify-center">
-                          <span className="text-yellow-500 font-bold">
-                            {comment.likes.length}
-                          </span>
-                        </div>
+                        <span className="text-yellow-500 font-bold">
+                          {comment.likes.length}
+                        </span>
                       </p>
                     </div>
                   </div>
